@@ -1,4 +1,4 @@
-package com.college.cms.modules.auth.entity;
+package com.college.cms.modules.role.entity;
 
 import com.college.cms.common.base.BaseEntity;
 import jakarta.persistence.*;
@@ -6,19 +6,21 @@ import lombok.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "module_name")
+@Table(name = "permissions")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ModuleName extends BaseEntity {
+public class Permission extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
-    private String name; // STUDENT, FEES, COURSE
+    private String name; // CREATE, READ, UPDATE, DELETE
 
-    @OneToMany(mappedBy = "module")
+    private String code;
+
+    @OneToMany(mappedBy = "permission")
     private Set<RolePermission> rolePermissions;
 }

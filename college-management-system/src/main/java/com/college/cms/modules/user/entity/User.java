@@ -1,4 +1,4 @@
-package com.college.cms.modules.auth.entity;
+package com.college.cms.modules.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,4 +1,4 @@
-package com.college.cms.modules.auth.entity;
+package com.college.cms.modules.role.entity;
 
 import com.college.cms.common.base.BaseEntity;
 import jakarta.persistence.*;

@@ -1,13 +1,16 @@
-package com.college.cms.modules.auth.entity;
+package com.college.cms.modules.role.entity;
 
 import com.college.cms.common.base.BaseEntity;
+import com.college.cms.modules.user.entity.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.util.Set;
 
 @Entity
 @Table(name = "roles")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Role extends BaseEntity {
@@ -16,7 +19,7 @@ public class Role extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true,nullable = false)
     private String name; // ADMIN, STUDENT
     private String code;
 

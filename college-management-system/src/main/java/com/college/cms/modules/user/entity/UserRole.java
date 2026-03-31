@@ -1,6 +1,7 @@
-package com.college.cms.modules.auth.entity;
+package com.college.cms.modules.user.entity;
 
 import com.college.cms.common.base.BaseEntity;
+import com.college.cms.modules.role.entity.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
