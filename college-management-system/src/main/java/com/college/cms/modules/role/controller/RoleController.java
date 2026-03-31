@@ -5,6 +5,7 @@ import com.college.cms.modules.role.dto.RoleRequest;
 import com.college.cms.modules.role.entity.Role;
 import com.college.cms.modules.role.service.RoleService;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ public class RoleController {
 
     @PostMapping
     public ApiResponse<Role> createRole(
+            @Valid
             @RequestBody RoleRequest param
     ) {
         System.out.println("Role created: " + param);

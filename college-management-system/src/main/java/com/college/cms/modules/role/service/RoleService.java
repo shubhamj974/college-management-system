@@ -18,32 +18,9 @@ public class RoleService {
 
     public Role createRole(RoleRequest param) {
 
-        if (param == null) {
-            throw new CustomException(
-                    "Request cannot be null",
-                    HttpStatus.BAD_REQUEST,
-                    ErrorCodes.VALIDATION_ERROR
 
-            );
-        }
 
-        if (param.getName() == null || param.getName().trim().isEmpty()) {
-            throw new CustomException(
-                    "Role name is required",
-                    HttpStatus.BAD_REQUEST,
-                    ErrorCodes.VALIDATION_ERROR
-            );
-        }
-
-        if (param.getCode() == null || param.getCode().trim().isEmpty()) {
-            throw new CustomException(
-                    "Role code is required",
-                    HttpStatus.BAD_REQUEST,
-                    ErrorCodes.VALIDATION_ERROR
-            );
-        }
-
-        if (roleRepository.existsByName(param.getCode().trim().toUpperCase())) {
+        if (roleRepository.existsByName(param.getName().trim().toUpperCase())) {
             throw new CustomException(
                     "Role with this code already exists",
                     HttpStatus.CONFLICT,
