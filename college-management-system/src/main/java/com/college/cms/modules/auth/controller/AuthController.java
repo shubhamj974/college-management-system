@@ -20,8 +20,16 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest request) {
-        return authService.register(request);
+    public ResponseEntity<ApiResponse<RegisterRequest>> register(@RequestBody RegisterRequest request) {
+        RegisterRequest registerResponse = authService.register(request);
+
+        ApiResponse<RegisterRequest> response = ApiResponse.<RegisterRequest>builder()
+                .success(true)
+                .message("User registered successfully")
+                .data(registerResponse)
+                .build();
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")

@@ -9,7 +9,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +21,8 @@ public class Role extends BaseEntity {
     private Long id;
 
     @Column(unique = true,nullable = false)
-    private String name; // ADMIN, STUDENT
+    private String name;
+
     private String code;
 
     @OneToMany(mappedBy = "role")

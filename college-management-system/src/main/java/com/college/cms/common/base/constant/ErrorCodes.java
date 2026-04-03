@@ -9,4 +9,6 @@ public class ErrorCodes {
     public static final String BAD_CREDENTIALS = "AUTH_401";
     public static final String RESOURCE_NOT_FOUND = "RES_404";
     public static final String DUPLICATE_FOUND = "DB_001";
+    public static final String USER_ALREADY_EXISTS = "USER_001";
+    public static final String ROLE_NOT_FOUND = "ROLE_404";
 }
