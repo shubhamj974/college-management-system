@@ -5,6 +5,7 @@ import com.college.cms.modules.user.entity.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,8 +27,8 @@ public class Role extends BaseEntity {
     private String code;
 
     @OneToMany(mappedBy = "role")
-    private Set<UserRole> userRoles;
+    private List<UserRole> userRoles;
 
     @OneToMany(mappedBy = "role")
-    private Set<RolePermission> rolePermissions;
+    private List<RolePermission> rolePermissions;
 }

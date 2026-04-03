@@ -1,8 +1,9 @@
 package com.college.cms.modules.role.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
-
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -11,6 +12,7 @@ import lombok.*;
 public class RoleRequest {
     @NotBlank()
     private String name;
-    @NotBlank()
-    private String code;
+
+    @NotEmpty
+    private List<RolePermissionDto> permissions;
 }

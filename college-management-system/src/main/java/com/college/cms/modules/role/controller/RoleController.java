@@ -2,6 +2,7 @@ package com.college.cms.modules.role.controller;
 
 import com.college.cms.common.base.dto.ApiResponse;
 import com.college.cms.modules.role.dto.RoleRequest;
+import com.college.cms.modules.role.dto.RoleResponse;
 import com.college.cms.modules.role.entity.Role;
 import com.college.cms.modules.role.service.RoleService;
 
@@ -20,12 +21,12 @@ public class RoleController {
     private final RoleService roleService;
 
     @PostMapping
-    public ApiResponse<Role> createRole(
+    public ApiResponse<RoleResponse> createRole(
             @Valid
             @RequestBody RoleRequest param
     ) {
-        Role role = roleService.createRole(param);
-        return ApiResponse.<Role>builder()
+        RoleResponse role = roleService.createRole( param);
+        return ApiResponse.<RoleResponse>builder()
                 .success(true)
                 .message("Role created successfully")
                 .errorCode(null)
