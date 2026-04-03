@@ -6,5 +6,5 @@ import java.util.*;
 
 public interface PermissionRepositrory extends JpaRepository<Permission, Long> {
     Optional<Permission> findByName(String name);
-
+    boolean existsByName(String name);
 }

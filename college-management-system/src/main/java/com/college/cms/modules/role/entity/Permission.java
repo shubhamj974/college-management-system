@@ -8,6 +8,7 @@ import java.util.Set;
 @Entity
 @Table(name = "permissions")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Permission extends BaseEntity {

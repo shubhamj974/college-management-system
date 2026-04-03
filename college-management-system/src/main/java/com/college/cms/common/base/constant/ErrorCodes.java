@@ -8,4 +8,5 @@ public class ErrorCodes {
     public static final String ACCESS_DENIED = "AUTH_403";
     public static final String BAD_CREDENTIALS = "AUTH_401";
     public static final String RESOURCE_NOT_FOUND = "RES_404";
+    public static final String DUPLICATE_FOUND = "DB_001";
 }

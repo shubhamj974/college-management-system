@@ -3,6 +3,7 @@ package com.college.cms.exception;
 import com.college.cms.common.base.constant.ErrorCodes;
 import com.college.cms.common.base.dto.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -92,6 +93,38 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
+
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiResponse<Object>> handleDuplicateEntry(
+            DataIntegrityViolationException ex,
+            HttpServletRequest request
+    ) {
+
+        String message = "Duplicate entry found";
+
+        Throwable root = ex.getRootCause();
+        if (root != null && root.getMessage() != null) {
+            String rootMsg = root.getMessage();
+
+            // Try to extract duplicate value (optional improvement)
+            if (rootMsg.contains("Duplicate entry")) {
+                message = "Duplicate value already exists";
+            }
+        }
+
+        ApiResponse<Object> response = ApiResponse.builder()
+                .success(false)
+                .message(message)
+                .errorCode(ErrorCodes.DUPLICATE_FOUND)
+                .data(null)
+                .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleGeneralException(
