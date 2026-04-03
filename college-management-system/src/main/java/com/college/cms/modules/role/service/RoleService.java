@@ -1,6 +1,5 @@
 package com.college.cms.modules.role.service;
 
-import com.college.cms.common.base.constant.ErrorCodes;
 import com.college.cms.exception.CustomException;
 import com.college.cms.modules.role.dto.RoleRequest;
 import com.college.cms.modules.role.entity.Role;

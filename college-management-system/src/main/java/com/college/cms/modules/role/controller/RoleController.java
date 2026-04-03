@@ -24,7 +24,6 @@ public class RoleController {
             @Valid
             @RequestBody RoleRequest param
     ) {
-        System.out.println("Role created: " + param);
         Role role = roleService.createRole(param);
         return ApiResponse.<Role>builder()
                 .success(true)
