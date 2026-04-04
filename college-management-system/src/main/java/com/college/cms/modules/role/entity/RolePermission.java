@@ -5,25 +5,21 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "role_permissions")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class RolePermission extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "role_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "roleId")
     private Role role;
 
-    @ManyToOne
-    @JoinColumn(name = "module_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "moduleId")
     private ModuleName module;
 
-    @ManyToOne
-    @JoinColumn(name = "permission_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "permissionId")
     private Permission permission;
 }

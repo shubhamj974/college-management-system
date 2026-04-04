@@ -6,27 +6,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-
+import lombok.experimental.SuperBuilder;
 import java.util.Set;
 
 @Entity
-@Table(
-        name = "module_name",
-        indexes = {
-                @Index(name = "idx_module_code", columnList = "code"),
-                @Index(name = "idx_module_parent", columnList = "parent_id")
-        }
-)
+@Table(indexes = {
+        @Index(name = "idx_module_code", columnList = "code"),
+        @Index(name = "idx_module_parent", columnList = "parentId")
+})
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class ModuleName extends BaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(nullable = false, unique = true, length = 100)
     private String name;
@@ -37,21 +30,19 @@ public class ModuleName extends BaseEntity {
     @Column(length = 255)
     private String description;
 
-    @Column(name = "display_order")
     private Integer displayOrder;
 
-    @Column(name = "is_active")
     @Builder.Default
     private Boolean isActive = true;
 
     @Column(length = 100)
     private String icon;
 
-    @Column(name = "route_path", length = 150)
+    @Column(length = 150)
     private String routePath;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "parentId")
     @JsonBackReference
     private ModuleName parent;
 

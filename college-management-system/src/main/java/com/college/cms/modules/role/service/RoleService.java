@@ -31,7 +31,6 @@ public class RoleService {
 
     @Transactional
     public RoleResponse createRole(RoleRequest param) {
-
         RoleType roleType;
         try {
             roleType = RoleType.valueOf(param.getName().trim().toUpperCase());
@@ -57,9 +56,80 @@ public class RoleService {
                 .build();
 
         role = roleRepository.save(role);
+        saveRolePermissions(role, param.getPermissions());
 
-        for (RolePermissionDto rp : param.getPermissions()) {
+        return buildRoleResponse(role);
+    }
 
+    public List<RoleResponse> getAllRoles() {
+        return roleRepository.findAll().stream()
+                .map(this::buildRoleResponse)
+                .toList();
+    }
+
+    public RoleResponse getRoleById(Long id) {
+        Role role = findRoleById(id);
+        return buildRoleResponse(role);
+    }
+
+    @Transactional
+    public RoleResponse updateRole(Long id, RoleRequest param) {
+        Role role = findRoleById(id);
+
+        RoleType roleType;
+        try {
+            roleType = RoleType.valueOf(param.getName().trim().toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            throw new CustomException(
+                    "Invalid role type",
+                    HttpStatus.BAD_REQUEST,
+                    "ROLE_002"
+            );
+        }
+
+        // Check if name exists for another role
+        if (!role.getName().equals(roleType.getDisplayName())
+                && roleRepository.existsByName(roleType.getDisplayName())) {
+            throw new CustomException(
+                    "Role already exists",
+                    HttpStatus.CONFLICT,
+                    "ROLE_001"
+            );
+        }
+
+        role.setName(roleType.getDisplayName());
+        role.setCode(roleType.name());
+        role = roleRepository.save(role);
+
+        // Delete existing permissions and add new ones
+        rolePermissionRepository.deleteByRoleId(id);
+        saveRolePermissions(role, param.getPermissions());
+
+        return buildRoleResponse(role);
+    }
+
+    @Transactional
+    public void deleteRole(Long id) {
+        Role role = findRoleById(id);
+        rolePermissionRepository.deleteByRoleId(id);
+        roleRepository.delete(role);
+    }
+
+    private Role findRoleById(Long id) {
+        return roleRepository.findById(id)
+                .orElseThrow(() -> new CustomException(
+                        "Role not found",
+                        HttpStatus.NOT_FOUND,
+                        "ROLE_404"
+                ));
+    }
+
+    private void saveRolePermissions(Role role, List<RolePermissionDto> permissions) {
+        if (permissions == null || permissions.isEmpty()) {
+            return;
+        }
+
+        for (RolePermissionDto rp : permissions) {
             ModuleName module = moduleRepository.findById(rp.getModuleId())
                     .orElseThrow(() -> new CustomException(
                             "Module not found",
@@ -73,6 +143,7 @@ public class RoleService {
                             HttpStatus.NOT_FOUND,
                             "PERMISSION_404"
                     ));
+
             RolePermission rolePermission = new RolePermission();
             rolePermission.setRole(role);
             rolePermission.setModule(module);
@@ -80,9 +151,10 @@ public class RoleService {
 
             rolePermissionRepository.save(rolePermission);
         }
+    }
 
-        List<RolePermission> rolePermissions =
-                rolePermissionRepository.findByRoleId(role.getId());
+    private RoleResponse buildRoleResponse(Role role) {
+        List<RolePermission> rolePermissions = rolePermissionRepository.findByRoleId(role.getId());
 
         List<RolePermissionDto> permissionResponses = rolePermissions.stream()
                 .map(rp -> RolePermissionDto.builder()
